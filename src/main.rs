@@ -39,5 +39,19 @@ async fn main() -> Result<(), reqwest::Error> {
 
     println!("{:#?}", new_todo);
 
+    // Example: Send a response with serde_json
+    let new_serde_todo: serde_json::Value = reqwest::Client::new()
+        .post("https://jsonplaceholder.typicode.com/todos")
+        .json(&serde_json::json!({
+            "userId": 1,
+            "title": "I like serde_json".to_owned(),
+            "completed": false
+        }))
+        .send()
+        .await?
+        .json()
+        .await?;
+
+    println!("{:#?}", new_serde_todo);
     Ok(())
 }
